@@ -90,3 +90,35 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+###########
+# Project #
+###########
+
+# Dependencies
+node_modules/
+
+# Build output
+.output/
+.nitro/
+.tanstack/
+.vinxi/
+dist/
+build/
+
+# Test / coverage
+coverage/
+.vitest/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment (secrets) — committed: .env.example, .env.development, .env.test
+.env
+.env.production
+.env*.local
+
+# Editor
+.idea/
+*.swp

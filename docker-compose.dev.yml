@@ -1,0 +1,35 @@
+# Local development dependencies (PostgreSQL + Redis) for `npm run dev`.
+# Ports are published to localhost to match .env.development.
+# Usage: docker compose -f docker-compose.dev.yml up -d
+name: dori-dev
+
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dori
+      POSTGRES_PASSWORD: dori
+      POSTGRES_DB: dori
+    ports:
+      - "5432:5432"
+    volumes:
+      - dori-dev-postgres:/var/lib/postgresql/data
+      - ./docker/postgres-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dori -d dori"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  redis:
+    image: redis:8
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - dori-dev-redis:/data
+
+volumes:
+  dori-dev-postgres:
+  dori-dev-redis:

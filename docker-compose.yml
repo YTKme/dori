@@ -1,0 +1,77 @@
+# Dori CRM — self-contained appliance.
+# Usage: cp .env.example .env && edit secrets && docker compose up -d
+name: dori
+
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DORI_POSTGRESQL_USERNAME}
+      POSTGRES_PASSWORD: ${DORI_POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${DORI_POSTGRESQL_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    # Not published to the host: only reachable on the internal network.
+
+  redis:
+    image: redis:8
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${DORI_REDIS_PASSWORD}
+    command: ["sh", "-c", "redis-server --requirepass \"$$REDIS_PASSWORD\""]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$$REDIS_PASSWORD\" ping | grep -q PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  # One-shot: waits for Postgres, applies migrations, optionally seeds.
+  migrate:
+    build:
+      context: .
+      target: runtime
+    image: dori:latest
+    command: ["migrate"]
+    env_file: .env
+    environment:
+      DORI_POSTGRESQL_HOST: postgres
+      DORI_REDIS_HOST: redis
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  app:
+    build:
+      context: .
+      target: runtime
+    image: dori:latest
+    command: ["serve"]
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      DORI_POSTGRESQL_HOST: postgres
+      DORI_REDIS_HOST: redis
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "${DORI_APPLICATION_PORT:-3000}:3000"
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  redis-data:

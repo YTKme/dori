@@ -1,0 +1,42 @@
+erDiagram
+  organization ||--o{ member : has
+  user ||--o{ member : "belongs to"
+  organization ||--o{ account : owns
+  organization ||--o{ lead : owns
+  organization ||--o{ opportunity_stage : owns
+
+  account ||--o{ contact : has
+  account ||--o{ opportunity : has
+  account ||--o{ case : has
+  account ||--o{ quote : has
+  contact }o--o{ opportunity : "via opportunity_contact_role"
+
+  opportunity_stage ||--o{ opportunity : "stages"
+  opportunity ||--o{ opportunity_line_item : has
+  opportunity ||--o{ quote : has
+  opportunity ||--o{ opportunity_contact_role : has
+
+  product ||--o{ price_book_entry : "priced in"
+  price_book ||--o{ price_book_entry : contains
+  product ||--o{ opportunity_line_item : "on"
+  quote ||--o{ quote_line_item : has
+  product ||--o{ quote_line_item : "on"
+
+  case ||--o{ case_comment : has
+  campaign ||--o{ campaign_member : has
+  lead ||--o{ campaign_member : "targeted by"
+  contact ||--o{ campaign_member : "targeted by"
+
+  account ||--o{ activity : "related to"
+  contact ||--o{ activity : "related to"
+  lead ||--o{ activity : "related to"
+  opportunity ||--o{ activity : "related to"
+  case ||--o{ activity : "related to"
+
+  account ||--o{ note : "related to"
+  contact ||--o{ note : "related to"
+  opportunity ||--o{ note : "related to"
+
+  lead ||..|| account : "converts to"
+  lead ||..|| contact : "converts to"
+  lead ||..|| opportunity : "converts to"
