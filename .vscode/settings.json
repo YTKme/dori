@@ -1,0 +1,73 @@
+{
+  "editor.rulers": [
+    {
+      "column": 72,
+      "color": "#005A00FF"
+    },
+    // {
+    //   "column": 80,
+    //   "color": "#4183C499"
+    // },
+    {
+      "column": 88,
+      "color": "#FFD34366"
+    },
+    // {
+    //   "column": 100,
+    //   "color": "#E33B2699"
+    // },
+    // {
+    //   "column": 120,
+    //   "color": "#4F5B93FF"
+    // }
+  ],
+  "editor.insertSpaces": true,
+  "[markdown]": {
+    "editor.tabSize": 2,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 72,
+  },
+  "[json]": {
+    "editor.tabSize": 2,
+  },
+  "[css]": {
+    "editor.tabSize": 2,
+  },
+  "[scss]": {
+    "editor.tabSize": 2
+  },
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+  "[javascriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+  },
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+  },
+  "[typescriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    },
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4
+  }
+}
